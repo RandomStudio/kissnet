@@ -924,13 +924,14 @@ namespace kissnet
 
 		void set_multicast(const char * groupIp, const char * interfaceIp) {
 			struct ip_mreq mreq {
-				inet_addr(groupIp),
+				inet_addr("groupIp"),
 				inet_addr(interfaceIp)
 			};
-			// mreq.imr_multiaddr = inet_addr(groupIp);
-			// mreq.imr_interface = inet_addr(interfaceIp);
 
-			setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+			int result = setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+			if (result != 0) {
+				kissnet_fatal_error("failed to set multicast");
+			}
 		}
 
 		///Set the socket option for broadcasts
