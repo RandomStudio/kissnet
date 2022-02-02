@@ -923,10 +923,9 @@ namespace kissnet
 		}
 
 		void set_multicast(const char * groupIp, const char * interfaceIp) {
-			struct ip_mreq mreq {
-				inet_addr(groupIp),
-				inet_addr(interfaceIp)
-			};
+			struct ip_mreq mreq;
+			mreq.imr_multiaddr.s_addr = inet_addr(groupIp);
+			mreq.imr_interface.s_addr = inet_addr(interfaceIp);
 
 			int result = setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
 			if (result != 0) {
