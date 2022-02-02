@@ -924,7 +924,7 @@ namespace kissnet
 
 		void set_multicast(const char * groupIp, const char * interfaceIp) {
 			struct ip_mreq mreq {
-				inet_addr("groupIp"),
+				inet_addr(groupIp),
 				inet_addr(interfaceIp)
 			};
 
