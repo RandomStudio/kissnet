@@ -922,6 +922,17 @@ namespace kissnet
 				kissnet_fatal_error("setting socket to nonblock returned an error");
 		}
 
+		void set_multicast(const char * groupIp, const char * interfaceIp) {
+			struct ip_mreq mreq {
+				inet_addr(groupIp),
+				inet_addr(interfaceIp)
+			};
+			// mreq.imr_multiaddr = inet_addr(groupIp);
+			// mreq.imr_interface = inet_addr(interfaceIp);
+
+			setsockopt(sock, IPPROTO_IP, IP_ADD_MEMBERSHIP, &mreq, sizeof(mreq));
+		}
+
 		///Set the socket option for broadcasts
 		/// \param state By default "true". If put to false, it will disable broadcasts
 		void set_broadcast(bool state = true) const
